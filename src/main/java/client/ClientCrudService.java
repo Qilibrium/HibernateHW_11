@@ -1,10 +1,16 @@
 package client;
 
 import Storage.hibernate.HibernateUtil;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientCrudService {
    private final HibernateUtil util = HibernateUtil.getInstance();
@@ -21,12 +27,13 @@ public class ClientCrudService {
         return name;
     }
 
-    public String readClientById(long id){
+    public Client readClientById(long id){
         Session session = util.getSessionFactory().openSession();
         Client client = session.get(Client.class,id);
+        client.getName();
         System.out.println("client = " + client);
         session.close();
-        return String.valueOf(client);
+        return client;
     }
 
     public void updateClientById(long id, String name){
@@ -35,7 +42,6 @@ public class ClientCrudService {
         Client update = session.get(Client.class,id);
         String s = update.setName(name);
         session.persist(update);
-        System.out.println("update = " + s);
         transaction.commit();
         session.close();
 
@@ -47,6 +53,14 @@ public class ClientCrudService {
         session.remove(clientDeleteById);
         transaction.commit();
         session.close();
+    }
+
+    public void getAllClients(){
+        Session session = util.getSessionFactory().openSession();
+        List<Client> client = session.createQuery("from Client ", Client.class).list();
+        System.out.println("client = " + client);
+        session.close();
+
     }
 
     }

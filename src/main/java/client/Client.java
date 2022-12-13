@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name="client")
 public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -30,4 +31,11 @@ public class Client {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "Client.Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

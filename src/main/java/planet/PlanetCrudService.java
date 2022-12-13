@@ -3,6 +3,8 @@ import Storage.hibernate.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 
 public class PlanetCrudService {
     private final HibernateUtil util = HibernateUtil.getInstance();
@@ -17,12 +19,12 @@ public class PlanetCrudService {
         transaction.commit();
         session.close();
     }
-    public Object readPlanetById(String id){
+    public void readPlanetById(String id){
         Session session = util.getSessionFactory().openSession();
         Planet planet = session.get(Planet.class, id);
         String name = planet.getName();
         System.out.println("name = " + name);
-        return name;
+        session.close();
     }
     public void updatePlanetById(String id, String name){
         Session session = util.getSessionFactory().openSession();
@@ -41,6 +43,13 @@ public class PlanetCrudService {
         session.remove(deletePlanet);
         transaction.commit();
         session.close();
+    }
+    public List<Planet> getAllPlanets(){
+        Session session = util.getSessionFactory().openSession();
+        List<Planet> planets = session.createQuery("from Planet", Planet.class).list();
+        System.out.println("planets = " + planets);
+        session.close();
+        return  planets;
     }
 }
 

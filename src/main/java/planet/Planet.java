@@ -6,13 +6,12 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
+@Table(name="planet")
 public class Planet {
 
-
     @Id
-
     private String id;
-
+@Column
     private String name;
 
     public String getId() {
@@ -31,4 +30,11 @@ public class Planet {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Planet{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

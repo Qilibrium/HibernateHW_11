@@ -6,7 +6,7 @@ public class DatabaseInitService {
     public void initDb() {
         Flyway flyway = Flyway
                 .configure()
-                .dataSource(StorageConstants.CONNECTION_URL,null,null)
+                .dataSource("jdbc:h2:./test",null,null)
                 .load();
 
         flyway.migrate();
