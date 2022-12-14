@@ -44,12 +44,17 @@ public class PlanetCrudService {
         transaction.commit();
         session.close();
     }
-    public List<Planet> getAllPlanets(){
+    public void getAllPlanets(){
         Session session = util.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         List<Planet> planets = session.createQuery("from Planet", Planet.class).list();
-        System.out.println("planets = " + planets);
+        for (Planet planet : planets) {
+            System.out.println(planet);
+        }
+        System.out.println("\n================\n");
+        transaction.commit();
         session.close();
-        return  planets;
+
     }
 }
 

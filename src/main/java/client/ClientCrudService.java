@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientCrudService {
-   private final HibernateUtil util = HibernateUtil.getInstance();
+    private final HibernateUtil util = HibernateUtil.getInstance();
 
 
     public String createClientById(String name) {
@@ -27,43 +27,52 @@ public class ClientCrudService {
         return name;
     }
 
-    public Client readClientById(long id){
+    public Client readClientById(long id) {
         Session session = util.getSessionFactory().openSession();
-        Client client = session.get(Client.class,id);
+        Client client = session.get(Client.class, id);
         client.getName();
         System.out.println("client = " + client);
         session.close();
         return client;
     }
 
-    public void updateClientById(long id, String name){
+    public void updateClientById(long id, String name) {
         Session session = util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        Client update = session.get(Client.class,id);
+        Client update = session.get(Client.class, id);
         String s = update.setName(name);
         session.persist(update);
         transaction.commit();
         session.close();
 
     }
-    public void deleteClientById(long id){
+
+    public void deleteClientById(long id) {
         Session session = util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        Client clientDeleteById = session.get(Client.class,id);
+        Client clientDeleteById = session.get(Client.class, id);
         session.remove(clientDeleteById);
         transaction.commit();
         session.close();
     }
 
-    public void getAllClients(){
+    public void getAllClients() {
         Session session = util.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         List<Client> client = session.createQuery("from Client ", Client.class).list();
-        System.out.println("client = " + client);
+        for (Client clients : client) {
+            System.out.println(clients);
+        }
+        System.out.println("\n================\n");
+        transaction.commit();
         session.close();
 
     }
 
-    }
+
+}
+
+
 
 
 
