@@ -9,7 +9,7 @@ import java.util.List;
 public class PlanetCrudService {
     private final HibernateUtil util = HibernateUtil.getInstance();
 
-    public void createPlanetById(String id, String name) {
+    public Planet createPlanetById(String id, String name) {
         Session session = util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         Planet newPlanet = new Planet();
@@ -18,15 +18,15 @@ public class PlanetCrudService {
         session.persist(newPlanet);
         transaction.commit();
         session.close();
+        return newPlanet;
     }
-    public void readPlanetById(String id){
+    public Planet readPlanetById(String id){
         Session session = util.getSessionFactory().openSession();
         Planet planet = session.get(Planet.class, id);
-        String name = planet.getName();
-        System.out.println("name = " + name);
         session.close();
+        return planet;
     }
-    public void updatePlanetById(String id, String name){
+    public Planet updatePlanetById(String id, String name){
         Session session = util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         Planet updatePlanet=session.get(Planet.class,id);
@@ -34,17 +34,19 @@ public class PlanetCrudService {
         session.persist(updatePlanet);
         transaction.commit();
         session.close();
+        return updatePlanet;
     }
 
-    public void deletePlanetById(String id){
+    public Planet deletePlanetById(String id){
         Session session = util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         Planet deletePlanet = session.get(Planet.class,id);
         session.remove(deletePlanet);
         transaction.commit();
         session.close();
+        return deletePlanet;
     }
-    public void getAllPlanets(){
+    public List<Planet> getAllPlanets(){
         Session session = util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         List<Planet> planets = session.createQuery("from Planet", Planet.class).list();
@@ -55,6 +57,7 @@ public class PlanetCrudService {
         transaction.commit();
         session.close();
 
+        return planets;
     }
 }
 

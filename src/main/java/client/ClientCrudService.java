@@ -1,22 +1,16 @@
 package client;
 
 import Storage.hibernate.HibernateUtil;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClientCrudService {
     private final HibernateUtil util = HibernateUtil.getInstance();
 
 
-    public String createClientById(String name) {
+    public Client createClientById(String name) {
         Session session = util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         Client newClient = new Client();
@@ -24,39 +18,38 @@ public class ClientCrudService {
         session.persist(newClient);
         transaction.commit();
         session.close();
-        return name;
+        return newClient;
     }
 
-    public void readClientById(long id) {
+    public Client readClientById(long id) {
         Session session = util.getSessionFactory().openSession();
         Client client = session.get(Client.class, id);
-        client.getName();
-        System.out.println(client);
         session.close();
-
+        return client;
     }
 
-    public void updateClientById(long id, String name) {
+    public Client updateClientById(long id, String name) {
         Session session = util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         Client update = session.get(Client.class, id);
-        String s = update.setName(name);
+        update.setName(name);
         session.persist(update);
         transaction.commit();
         session.close();
-
+        return update;
     }
 
-    public void deleteClientById(long id) {
+    public Client deleteClientById(long id) {
         Session session = util.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         Client clientDeleteById = session.get(Client.class, id);
         session.remove(clientDeleteById);
         transaction.commit();
         session.close();
+        return clientDeleteById;
     }
 
-    public void getAllClients() {
+    public List<Client> getAllClients() {
         Session session = util.getSessionFactory().openSession();
         List<Client> client = session.createQuery("from Client ", Client.class).list();
         for (Client clients : client) {
@@ -65,6 +58,7 @@ public class ClientCrudService {
         System.out.println("\n================\n");
         session.close();
 
+        return client;
     }
 
     }

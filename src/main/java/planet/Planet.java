@@ -2,16 +2,19 @@ package planet;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
-@Table(name="planet")
+@Table(name = "planet")
 public class Planet {
+    public Planet(){
+
+    }
 
     @Id
+    @Column(name = "id",unique=true,columnDefinition="VARCHAR(4)")
     private String id;
-@Column
+@Column(name = "name")
     private String name;
 
     public String getId() {
